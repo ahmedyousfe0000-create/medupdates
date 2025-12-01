@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MedUpdates - منصة الأخبار الطبية العربية</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* تصاميم CSS ... (نفس ما أرسلته بالضبط) */
+*{margin:0;padding:0;box-sizing:border-box;}
+html{font-family:'Cairo',sans-serif;color-scheme:light dark;}
+body{background:#f5f8fb;color:#1e293b;transition:all 0.3s ease;font-family:'Cairo',sans-serif;}
+body.dark-mode{background:#0f1623;color:#e2e8f0;}
+.container{max-width:1200px;margin:0 auto;padding:0 20px;}
+header{background:white;border-bottom:1px solid #e2e8f0;padding:20px 0;position:sticky;top:0;z-index:100;transition:all 0.3s ease;}
+body.dark-mode header{background:#1a2742;border-color:#334155;}
+.header-content{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;}
+.logo{font-size:24px;font-weight:700;color:#0066ff;}
+.header-buttons{display:flex;gap:10px;align-items:center;}
+button{padding:8px 16px;border:none;border-radius:6px;cursor:pointer;font-family:'Cairo',sans-serif;font-size:14px;transition:all 0.3s ease;}
+.btn-primary{background:#0066ff;color:white;}
+.btn-primary:hover{background:#0052cc;transform:translateY(-2px);}
+.btn-secondary{background:#f1f5f9;color:#1e293b;}
+body.dark-mode .btn-secondary{background:#334155;color:#e2e8f0;}
+.btn-secondary:hover{background:#e2e8f0;}
+body.dark-mode .btn-secondary:hover{background:#475569;}
+.btn-icon{width:40px;height:40px;padding:0;display:flex;align-items:center;justify-content:center;font-size:20px;}
+main{padding:40px 0;}
+.section-title{font-size:24px;font-weight:700;margin-bottom:20px;color:#0066ff;}
+body.dark-mode .section-title{color:#60a5fa;}
+.featured-slider{display:flex;gap:20px;overflow-x:auto;padding-bottom:10px;}
+.featured-card{flex-shrink:0;width:300px;background:white;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.1);transition:all 0.3s ease;cursor:pointer;}
+body.dark-mode .featured-card{background:#1a2742;box-shadow:0 2px 8px rgba(0,0,0,0.3);}
+.featured-card:hover{transform:translateY(-8px);box-shadow:0 8px 20px rgba(0,0,0,0.15);}
+.featured-card-content{padding:16px;}
+.featured-card-title{font-size:16px;font-weight:600;margin-bottom:8px;line-height:1.4;}
+.featured-card-tags{display:flex;gap:8px;flex-wrap:wrap;}
+.tag{background:#f1f5f9;color:#0066ff;padding:4px 8px;border-radius:4px;font-size:12px;}
+body.dark-mode .tag{background:#334155;color:#60a5fa;}
+.tag-filter{display:flex;gap:10px;margin-bottom:30px;flex-wrap:wrap;}
+.tag-button{padding:8px 16px;border:2px solid #e2e8f0;background:transparent;color:#1e293b;border-radius:20px;cursor:pointer;transition:all 0.3s ease;font-size:14px;}
+body.dark-mode .tag-button{border-color:#334155;color:#e2e8f0;}
+.tag-button:hover{border-color:#0066ff;color:#0066ff;}
+.tag-button.active{background:#0066ff;color:white;border-color:#0066ff;}
+.articles-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:24px;}
+.article-card{background:white;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.1);transition:all 0.3s ease;cursor:pointer;display:flex;flex-direction:column;}
+body.dark-mode .article-card{background:#1a2742;box-shadow:0 2px 8px rgba(0,0,0,0.3);}
+.article-card:hover{transform:translateY(-4px);box-shadow:0 8px 16px rgba(0,0,0,0.15);}
+.article-image{width:100%;height:200px;background:linear-gradient(135deg,#0066ff,#0052cc);display:flex;align-items:center;justify-content:center;color:white;font-size:48px;overflow:hidden;}
+.article-image img{width:100%;height:100%;object-fit:cover;}
+.article-content{padding:16px;flex:1;display:flex;flex-direction:column;}
+.article-title{font-size:18px;font-weight:600;margin-bottom:8px;line-height:1.4;color:#1e293b;}
+body.dark-mode .article-title{color:#e2e8f0;}
+.article-excerpt{font-size:14px;color:#64748b;margin-bottom:12px;line-height:1.5;flex:1;}
+body.dark-mode .article-excerpt{color:#cbd5e1;}
+.article-meta{font-size:12px;color:#94a3b8;display:flex;justify-content:space-between;}
+.modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:1000;justify-content:center;align-items:center;}
+.modal.active{display:flex;}
+.modal-content{background:white;border-radius:12px;padding:32px;max-width:600px;width:90%;max-height:90vh;overflow-y:auto;position:relative;}
+body.dark-mode .modal-content{background:#1a2742;}
+.modal-close{position:absolute;top:16px;left:16px;background:none;border:none;font-size:24px;cursor:pointer;color:#64748b;}
+.form-group{margin-bottom:20px;}
+label{display:block;margin-bottom:8px;font-weight:600;color:#1e293b;}
+body.dark-mode label{color:#e2e8f0;}
+input,textarea,select{width:100%;padding:10px;border:1px solid #e2e8f0;border-radius:6px;font-family:'Cairo',sans-serif;font-size:14px;background:white;color:#1e293b;transition:all 0.3s ease;}
+body.dark-mode input,body.dark-mode textarea,body.dark-mode select{background:#334155;border-color:#475569;color:#e2e8f0;}
+input:focus,textarea:focus,select:focus{outline:none;border-color:#0066ff;box-shadow:0 0 0 3px rgba(0,102,255,0.1);}
+textarea{resize:vertical;min-height:120px;}
+.article-detail{display:none;background:white;border-radius:12px;padding:32px;margin-bottom:40px;}
+body.dark-mode .article-detail{background:#1a2742;}
+.article-detail.active{display:block;}
+.article-detail img{width:100%;max-height:400px;object-fit:cover;border-radius:8px;margin-bottom:24px;}
+.article-detail-title{font-size:32px;font-weight:700;margin-bottom:12px;}
+.article-detail-meta{font-size:14px;color:#64748b;margin-bottom:24px;}
+body.dark-mode .article-detail-meta{color:#cbd5e1;}
+.article-detail-content{font-size:16px;line-height:1.8;color:#1e293b;margin-bottom:32px;}
+body.dark-mode .article-detail-content{color:#e2e8f0;}
+.share-buttons{display:flex;gap:12px;margin-top:24px;}
+.share-btn{flex:1;padding:12px;text-align:center;background:#f1f5f9;color:#1e293b;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:600;transition:all 0.3s ease;}
+body.dark-mode .share-btn{background:#334155;color:#e2e8f0;}
+.share-btn:hover{background:#0066ff;color:white;}
+.back-button{margin-bottom:20px;}
+.hidden{display:none;}
+@media(max-width:768px){.header-content{flex-direction:column;}.articles-grid{grid-template-columns:1fr;}.article-detail{padding:20px;}.article-detail-title{font-size:24px;}.featured-slider{scroll-snap-type:x mandatory;}.featured-card{scroll-snap-align:start;}}
+</style>
+</head>
+<body>
+<div id="app">
+<header>
+<div class="container">
+<div class="header-content">
+<div class="logo">🏥 MedUpdates</div>
+<div class="header-buttons">
+<button class="btn-icon" onclick="toggleTheme()" title="تبديل الوضع المظلم">🌙</button>
+<button class="btn-primary" onclick="openAdminLogin()">🛡️ لوحة التحكم</button>
+</div>
+</div>
+</div>
+</header>
+<main class="container">
+<div class="featured-section">
+<h2 class="section-title">المقالات المميزة</h2>
+<div class="featured-slider" id="featuredSlider"></div>
+</div>
+<div class="tag-filter" id="tagFilter"></div>
+<div id="articleDetail" class="article-detail"></div>
+<div id="articlesGrid" class="articles-grid"></div>
+</main>
+<!-- مودال تسجيل الدخول -->
+<div id="adminLoginModal" class="modal">
+<div class="modal-content">
+<button class="modal-close" onclick="closeAdminLogin()">&times;</button>
+<h2 style="margin-bottom:20px;margin-top:20px;">تسجيل الدخول</h2>
+<form onsubmit="handleAdminLogin(event)">
+<div class="form-group">
+<label>كلمة المرور:</label>
+<input type="password" id="adminPassword" required placeholder="أدخل كلمة المرور">
+</div>
+<button type="submit" class="btn-primary" style="width:100%;">دخول</button>
+</form>
+</div>
+</div>
+<!-- مودال لوحة التحكم -->
+<div id="adminPanel" class="modal">
+<div class="modal-content" style="max-width:700px;">
+<button class="modal-close" onclick="closeAdminPanel()">&times;</button>
+<h2 style="margin-bottom:20px;margin-top:20px;">لوحة التحكم</h2>
+<form onsubmit="handleAddArticle(event)">
+<div class="form-group">
+<label>عنوان المقالة:</label>
+<input type="text" id="articleTitle" required placeholder="أدخل العنوان">
+</div>
+<div class="form-group">
+<label>محتوى المقالة:</label>
+<textarea id="articleContent" required placeholder="أدخل المحتوى"></textarea>
+</div>
+<div class="form-group">
+<label>الوسوم (مفصولة بفواصل):</label>
+<input type="text" id="articleTags" placeholder="تغذية، صحة، أبحاث">
+</div>
+<div class="form-group">
+<label>صورة المقالة (اختياري):</label>
+<input type="file" id="articleImage" accept="image/*">
+</div>
+<div class="form-group">
+<label><input type="checkbox" id="articleFeatured"> مقالة مميزة؟</label>
+</div>
+<button type="submit" class="btn-primary" style="width:100%;">إضافة مقالة</button>
+</form>
+<div style="margin-top:30px;padding-top:20px;border-top:1px solid #e2e8f0;">
+<h3 style="margin-bottom:16px;">المقالات المضافة</h3>
+<div id="articlesList"></div>
+</div>
+</div>
+</div>
+</div>
+<script type="module">
+// ========== إعداد فايربيز ==========
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, orderBy } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+const firebaseConfig = {
+apiKey: "AIzaSyAw9t5IC4JAWcjx5uZsCG8xbN_TE7AA664",
+authDomain: "medupdates-decb5.firebaseapp.com",
+projectId: "medupdates-decb5",
+storageBucket: "medupdates-decb5.firebasestorage.app",
+messagingSenderId: "822964222028",
+appId: "1:822964222028:web:b2867a580d21b727a89ce9",
+measurementId: "G-41KW7Z552B"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// ==== متغيرات التطبيق ====
+let articles = [];
+let selectedTags = new Set();
+let currentArticleId = null;
+let isAdminLoggedIn = false;
+const ADMIN_PASSWORD = "YourStrongAdminPassword"; // <--- غيرها من هنا فقط!
+
+// ==== عند تحميل الصفحة ====
+document.addEventListener('DOMContentLoaded', () => {
+  if (localStorage.getItem('theme') === 'dark') {
+    document.body.classList.add('dark-mode');
+  }
+  fetchArticles();
+});
+
+// ======= التحكم في الوضع الليلي =======
+window.toggleTheme = function() {
+  document.body.classList.toggle('dark-mode');
+  localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+}
+
+// ======= فتح/إغلاق مودال الأدمن =======
+window.openAdminLogin = function() {
+  document.getElementById('adminLoginModal').classList.add('active');
+  document.getElementById('adminPassword').value = '';
+};
+window.closeAdminLogin = function() {
+  document.getElementById('adminLoginModal').classList.remove('active');
+};
+window.openAdminPanel = function() {
+  document.getElementById('adminPanel').classList.add('active');
+  renderArticlesList();
+};
+window.closeAdminPanel = function() {
+  document.getElementById('adminPanel').classList.remove('active');
+};
+
+// ======= دخول الأدمن =======
+window.handleAdminLogin = function(e) {
+  e.preventDefault();
+  const pw = document.getElementById('adminPassword').value;
+  if (pw === ADMIN_PASSWORD) {
+    isAdminLoggedIn = true;
+    closeAdminLogin();
+    openAdminPanel();
+  } else {
+    alert("كلمة المرور خاطئة!");
+  }
+};
+
+// ====== جلب و عرض المقالات من فايربيز ======
+async function fetchArticles() {
+  const q = query(collection(db, "articles"), orderBy("timestamp", "desc"));
+  const snapshot = await getDocs(q);
+  articles = [];
+  snapshot.forEach(docSnap => {
+    const data = docSnap.data();
+    articles.push({...data, id: docSnap.id});
+  });
+  renderFeatured();
+  renderArticles();
+  renderTags();
+}
+
+// ======= عرض المقالات المميزة =======
+function renderFeatured() {
+  const featuredSlider = document.getElementById('featuredSlider');
+  featuredSlider.innerHTML = '';
+  articles.filter(a => a.featured).forEach(article => {
+    const card = document.createElement('div');
+    card.className = 'featured-card';
+    card.innerHTML = `
+      <div class="featured-card-content">
+        <div class="featured-card-title">${article.title}</div>
+        <div class="featured-card-tags">${(article.tags||[]).map(tag => <span class="tag">${tag.trim()}</span>).join('')}</div>
+      </div>
+    `;
+    card.onclick = () => viewArticle(article.id);
+    featuredSlider.appendChild(card);
+  });
+}
+
+// ======= عرض الفلاتر (الوسوم) =======
+function renderTags() {
+  const tagFilter = document.getElementById('tagFilter');
+  let tagsSet = new Set();
+  articles.forEach(a => (a.tags||[]).forEach(tag => tagsSet.add(tag.trim())));
+  let tagsArr = Array.from(tagsSet);
+  if (tagsArr.length == 0) {
+    tagFilter.innerHTML = '';
+    selectedTags.clear();
+    return;
+  }
+  tagFilter.innerHTML = tagsArr.map(tag => 
+    <button class="tag-button${selectedTags.has(tag)?' active':''}" onclick="handleTagClick('${tag}')">${tag}</button>
+  ).join('');
+}
+
+// ======= عند الضغط على وسم (للتصفية) =======
+window.handleTagClick = function(tag) {
+  if (selectedTags.has(tag)) selectedTags.delete(tag);
+  else selectedTags.add(tag);
+  renderTags();
+  renderArticles();
+}
+
+// ======= عرض شبكة المقالات =======
+function renderArticles() {
+  const grid = document.getElementById('articlesGrid');
+  grid.innerHTML = '';
+  let toShow = articles.filter(article => {
+    if (selectedTags.size == 0) return true;
+    return (article.tags||[]).some(tag => selectedTags.has(tag.trim()));
+  });
+  if (toShow.length==0) {
+    grid.innerHTML = '<div>لا توجد مقالات حالياً لهذه الفئة.</div>';
+    return;
+  }
+  toShow.forEach(article => {
+    const card = document.createElement('div');
+    card.className = 'article-card';
+    card.innerHTML = `
+      <div class="article-image">${article.img?<img src="${article.img}" />: '📄'}</div>
+      <div class="article-content">
+        <div class="article-title">${article.title}</div>
+        <div class="article-excerpt">${article.content.slice(0,90)}...</div>
+        <div class="article-meta">
+          <span>${(article.tags||[]).join(', ')}</span>
+          <span>${new Date(article.timestamp).toLocaleDateString('ar-EG')}</span>
+        </div>
+      </div>
+    `;
+    card.onclick = () => viewArticle(article.id);
+    grid.appendChild(card);
+  });
+}
+
+// ======= فتح تفاصيل المقالة =======
+function viewArticle(aid) {
+  const article = articles.find(a => a.id===aid);
+  if (!article) return;
+  const detail = document.getElementById('articleDetail');
+  detail.classList.add('active');
+  detail.scrollIntoView({behavior:'smooth'});
+  detail.innerHTML = `
+    <button class="btn-secondary back-button" onclick="closeArticleDetail()">عودة للمقالات</button>
+    ${article.img?<img src="${article.img}" />:''}
+    <div class="article-detail-title">${article.title}</div>
+    <div class="article-detail-meta">${(article.tags||[]).join('، ')} | ${new Date(article.timestamp).toLocaleDateString('ar-EG')}</div>
+    <div class="article-detail-content">${article.content.replace(/\n/g,'<br>')}</div>
+    <div class="share-buttons">
+      <button class="share-btn" onclick="shareArticle('${article.title}','${location.href}')">مشاركة 🌐</button>
+    </div>
+  `;
+  document.getElementById('articlesGrid').classList.add('hidden');
+  document.getElementById('featuredSlider').parentElement.classList.add('hidden');
+  document.getElementById('tagFilter').classList.add('hidden');
+}
+window.closeArticleDetail = function() {
+  document.getElementById('articleDetail').classList.remove('active');
+  document.getElementById('articlesGrid').classList.remove('hidden');
+  document.getElementById('featuredSlider').parentElement.classList.remove('hidden');
+  document.getElementById('tagFilter').classList.remove('hidden');
+}
+window.shareArticle = function(title, url) {
+  if (navigator.share) {
+    navigator.share({title, url});
+  } else {
+    navigator.clipboard.writeText(url);
+    alert('تم نسخ رابط المقالة!');
+  }
+}
+
+// ============= لوحة الإدارة: إضافة مقال =============
+window.handleAddArticle = async function(e) {
+  e.preventDefault();
+  if (!isAdminLoggedIn) return;
+  const title = document.getElementById('articleTitle').value.trim();
+  const content = document.getElementById('articleContent').value.trim();
+  const tags = document.getElementById('articleTags').value.split(',').map(t=>t.trim()).filter(t=>t);
+  const featured = document.getElementById('articleFeatured').checked;
+  const timestamp = Date.now();
+  let img = '';
+  const imgFile = document.getElementById('articleImage').files[0];
+  if(imgFile){
+    img = await readAsDataURL(imgFile);
+  }
+  await addDoc(collection(db, "articles"), { title, content, tags, featured, timestamp, img });
+  fetchArticles();
+  resetForm();
+}
+function readAsDataURL(file){
+  return new Promise(resolve => {
+    const reader = new FileReader();
+    reader.onload = e => resolve(e.target.result);
+    reader.readAsDataURL(file);
+  });
+}
+function resetForm(){
+  document.getElementById('articleTitle').value = '';
+  document.getElementById('articleContent').value = '';
+  document.getElementById('articleTags').value = '';
+  document.getElementById('articleFeatured').checked = false;
+  document.getElementById('articleImage').value = '';
+}
+
+// ============= عرض قائمة المقالات (لوحة الإدارة) =============
+function renderArticlesList() {
+  const listDiv = document.getElementById('articlesList');
+  listDiv.innerHTML = articles.map(article =>
+    `<div style="border-bottom:1px solid #eee;padding:10px 0;">
+      ${article.title} <button onclick="deleteArticle('${article.id}')" style="background:#e3342f;color:white;border:none;border-radius:4px;padding:4px 12px;float:left;">حذف</button>
+    </div>`
+  ).join('');
+}
+
+// ============= حذف مقال من فايربيز =============
+window.deleteArticle = async function(articleId) {
+  if (!isAdminLoggedIn) return;
+  if (!confirm('هل أنت متأكد من حذف هذه المقالة؟')) return;
+  await deleteDoc(doc(db, "articles", articleId));
+  fetchArticles();
+}
+</script>
+</body>
+</html>
